@@ -4,3 +4,9 @@
 [submodule "developing front-end apps with react/Shopping_App"]
 	path = developing front-end apps with react/Shopping_App
 	url = https://github.com/subhash1208/Shopping-App.git
+[submodule "Introdction to Html, CSS and JavaScript"]
+	path = Introdction to Html, CSS and JavaScript
+	url = https://github.com/subhash1208/Introdction-Html-CSS-JavaScript.git
+[submodule "Developing Back-End Apps with Node.js and Express/Developing Back-End Apps with Node.js and Express"]
+	path = Developing Back-End Apps with Node.js and Express/Developing Back-End Apps with Node.js and Express
+	url = https://github.com/subhash1208/Developing-Back-End-Apps-with-Node.js-and-Express.git
