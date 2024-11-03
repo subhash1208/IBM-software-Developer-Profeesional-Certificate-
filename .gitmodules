@@ -1,0 +1,6 @@
+[submodule "Getting Started with Git and Git Hub/Final assignment"]
+	path = Getting Started with Git and Git Hub/Final assignment
+	url = https://github.com/subhash1208/GitHub-Assignment.git
+[submodule "developing front-end apps with react/Shopping_App"]
+	path = developing front-end apps with react/Shopping_App
+	url = https://github.com/subhash1208/Shopping-App.git
