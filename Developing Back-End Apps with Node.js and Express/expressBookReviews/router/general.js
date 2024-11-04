@@ -1,48 +1,22 @@
 const express = require("express");
-const axios = require("axios");
 let books = require("./booksdb.js");
-let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
-const doesExist = (username) => {
-  return users.some((user) => user.username === username);
-};
-
-const getAllBooks = () => {
-  return books;
-};
-
-public_users.post("/register", (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
-
-  if (!username || !password) {
-    return res.status(404).json({ message: "Missing username or password" });
-  } else if (doesExist(username)) {
-    return res.status(404).json({ message: "user already exists." });
-  } else {
-    users.push({ username: username, password: password });
-    return res
-      .status(200)
-      .json({ message: "User successfully registered.  Please login." });
-  }
-});
-
-// Get the book list available in the shop
+// Task 1: Get the book list available in the shop
 public_users.get("/", async (req, res) => {
   try {
-    const allBooks = await getAllBooks();
-    return res.status(200).send(JSON.stringify(allBooks, null, 4));
+    const allBooks = books; // return the entire books object
+    return res.status(200).json(allBooks);
   } catch (e) {
-    res.status(500).send(e);
+    return res.status(500).send(e);
   }
 });
 
-// Get book details based on ISBN
+// Task 2: Get book details based on ISBN
 public_users.get("/isbn/:isbn", async (req, res) => {
-  const targetISBN = parseInt(req.params.isbn);
-  const targetBook = await books[targetISBN];
+  const targetISBN = req.params.isbn;
+  const targetBook = books[targetISBN];
   if (!targetBook) {
     return res.status(404).json({ message: "ISBN not found." });
   } else {
@@ -50,40 +24,91 @@ public_users.get("/isbn/:isbn", async (req, res) => {
   }
 });
 
-// Get book details based on author
+// Task 3: Get all books by Author
 public_users.get("/author/:author", async (req, res) => {
-  // get array of matching book objects
-  const matchingBooks = Object.values(await books).filter(
+  const matchingBooks = Object.values(books).filter(
     (book) => book.author.toLowerCase() === req.params.author.toLowerCase()
   );
   if (matchingBooks.length > 0) {
-    return res.status(200).send(JSON.stringify(matchingBooks, null, 4));
+    return res.status(200).json(matchingBooks);
   } else {
     return res.status(404).json({ message: "No books by that author." });
   }
 });
 
-// Get all books based on title
+// Task 4: Get all books based on Title
 public_users.get("/title/:title", async (req, res) => {
-  const matchingTitle = Object.values(await books).filter(
+  const matchingTitle = Object.values(books).filter(
     (book) => book.title.toLowerCase() === req.params.title.toLowerCase()
-  )[0];
-  if (matchingTitle) {
+  );
+  if (matchingTitle.length > 0) {
     return res.status(200).json(matchingTitle);
   } else {
     return res.status(404).json({ message: "Title not found." });
   }
 });
 
-//  Get book review
-public_users.get("/review/:isbn", function (req, res) {
+// Task 5: Get book review
+public_users.get("/review/:isbn", async (req, res) => {
   const targetISBN = req.params.isbn;
   const targetBook = books[targetISBN];
   if (targetBook) {
-    return res.status(200).send(JSON.stringify(targetBook.reviews, null, 4));
+    return res.status(200).json(targetBook.reviews);
   } else {
     return res.status(404).json({ message: "ISBN not found." });
   }
+});
+
+// Task 10: Get all books (Using async callback function)
+public_users.get("/books", async (req, res) => {
+  try {
+    // Assuming books is an object where the key is the ISBN
+    const allBooks = Object.values(books); // Convert object to array
+    return res.status(200).json(allBooks);
+  } catch (error) {
+    return res.status(500).send({ error: "Could not retrieve books." });
+  }
+});
+
+// Task 11: Search by ISBN (Using Promises)
+public_users.get("/isbn/:isbn", (req, res) => {
+  return new Promise((resolve, reject) => {
+    const targetISBN = req.params.isbn;
+    const targetBook = books[targetISBN];
+    if (!targetBook) {
+      reject(res.status(404).json({ message: "ISBN not found." }));
+    } else {
+      resolve(res.status(200).json(targetBook));
+    }
+  });
+});
+
+// Task 12: Search by Author (Using Promises)
+public_users.get("/author/:author", (req, res) => {
+  return new Promise((resolve, reject) => {
+    const matchingBooks = Object.values(books).filter(
+      (book) => book.author.toLowerCase() === req.params.author.toLowerCase()
+    );
+    if (matchingBooks.length > 0) {
+      resolve(res.status(200).json(matchingBooks));
+    } else {
+      reject(res.status(404).json({ message: "No books by that author." }));
+    }
+  });
+});
+
+// Task 13: Search by Title (Using Promises)
+public_users.get("/title/:title", (req, res) => {
+  return new Promise((resolve, reject) => {
+    const matchingTitle = Object.values(books).filter(
+      (book) => book.title.toLowerCase() === req.params.title.toLowerCase()
+    );
+    if (matchingTitle.length > 0) {
+      resolve(res.status(200).json(matchingTitle));
+    } else {
+      reject(res.status(404).json({ message: "Title not found." }));
+    }
+  });
 });
 
 module.exports.general = public_users;
