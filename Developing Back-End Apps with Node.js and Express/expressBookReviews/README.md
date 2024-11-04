@@ -1,39 +1,102 @@
-# Selected Books API
 
-## General Endpoints - No login required
+# Express Book Reviews
 
-### GET /
+This project is a Node.js application for managing book reviews, allowing both general users and registered users to interact with the book database. It includes functionalities to view books, register, log in, and manage reviews.
 
-Retrieves a full list of my favorite book as JSON.
+## Table of Contents
 
-### GET /author/:author
+1. [Requirements](#requirements)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [API Endpoints](#api-endpoints)
+5. [Tasks](#tasks)
 
-Example: `/author/Frank%20Herbert` will retrieve all books by Frank Herbert.
+## Requirements
 
-### GET /title/:title
+- Node.js (v14 or higher)
+- npm (Node package manager)
 
-Example: `/title/Dune` retrieves all books titled _Dune_
+## Installation
 
-### GET /review/:isbn
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/subhash1208/IBM-software-Developer-Profeesional-Certificate-/tree/main/Developing%20Back-End%20Apps%20with%20Node.js%20and%20Express/expressBookReviews
+   ```
+   
+2. Navigate to the project directory:
+   ```bash
+   cd expressBookReviews
+   ```
 
-Retrieve reviews of a book, by ISBN.
+3. Install the required dependencies:
+   ```bash
+   npm install
+   ```
 
-Example: `/review/0441013597` retrieves reviews of the book with ISBN 0441013597 (Dune).
+## Usage
 
-### POST /register
+1. Start the server:
+   ```bash
+   node index.js
+   ```
 
-Requires a POST with request body of the form `{"username":"darthvader", "password":"1amyourFath3r"}`. Follow this up with a POST to /login.
+2. The server will run on `http://localhost:1337`.
 
-## Authenticated Users Only
+## API Endpoints
 
-### POST /login
+### General Users
 
-To authenticate. Request body must be of the form `{"username":"darthvader", "password":"1amyourFath3r"}`.
+- **Get all books**: `GET /`
+- **Get book by ISBN**: `GET /isbn/:isbn`
+- **Get all books by author**: `GET /author/:author`
+- **Get all books by title**: `GET /title/:title`
+- **Get book reviews**: `GET /review/:isbn`
+- **Register a new user**: `POST /register`
+- **Login as a registered user**: `POST /login`
 
-### PUT /auth/review/:isbn
+### Registered Users
 
-Add a book review to _ISBN_. Will only allow one review per book, per authenticated user. PUT body must be of the form `{"review": "This book blew my mind"}`.
+- **Add/Modify a book review**: `PUT /auth/review/:isbn`
+- **Delete a book review**: `DELETE /auth/review/:isbn`
 
-### DELETE /auth/review/:isbn
+### Tasks
 
-Delete your review from the book with indicated ISBN.
+1. **Get the book list available in the shop** 
+   - **Endpoint**: `GET /`
+
+2. **Get the books based on ISBN** 
+   - **Endpoint**: `GET /isbn/:isbn`
+
+3. **Get all books by Author** 
+   - **Endpoint**: `GET /author/:author`
+
+4. **Get all books based on Title** 
+   - **Endpoint**: `GET /title/:title`
+
+5. **Get book Review** 
+   - **Endpoint**: `GET /review/:isbn`
+
+6. **Register New user** 
+   - **Endpoint**: `POST /register`
+
+7. **Login as a Registered user** 
+   - **Endpoint**: `POST /login`
+
+8. **Add/Modify a book review** 
+   - **Endpoint**: `PUT /auth/review/:isbn`
+
+9. **Delete book review added by that particular user** 
+   - **Endpoint**: `DELETE /auth/review/:isbn`
+
+10. **Get all books – Using async callback function** 
+    - **Endpoint**: `GET /books` 
+
+11. **Search by ISBN – Using Promises** 
+    - **Endpoint**: `GET /isbn/:isbn`
+
+12. **Search by Author** 
+    - **Endpoint**: `GET /author/:author`
+
+13. **Search by Title** 
+    - **Endpoint**: `GET /title/:title`
+
